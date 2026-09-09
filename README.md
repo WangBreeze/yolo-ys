@@ -11,13 +11,72 @@
 - Ultralytics 8.4.144
 - NVIDIA GeForce RTX 5070 Ti Laptop GPU（12GB）
 
-建议使用 Miniforge 创建独立环境：
+## Conda / Miniforge 配置
+
+建议使用 Miniforge 管理独立的 Python 环境。它可以安装在当前用户目录，不需要 `sudo`，也不会替换 Arch Linux 由 `pacman` 管理的系统 Python。
+
+### 1. 安装 Miniforge
+
+Linux x86_64 可以执行：
+
+```bash
+cd /tmp
+curl -L -o Miniforge3.sh \
+  https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+bash Miniforge3.sh
+```
+
+安装时建议使用默认目录 `~/miniforge3`，并允许安装程序执行 `conda init`。
+
+如果安装后当前终端仍然找不到 `conda`，执行：
+
+```bash
+source ~/miniforge3/etc/profile.d/conda.sh
+conda init bash
+source ~/.bashrc
+```
+
+如果不希望每次打开终端时自动进入 `base` 环境：
+
+```bash
+conda config --set auto_activate_base false
+```
+
+### 2. 创建 YOLO26 环境
 
 ```bash
 conda create -n yolo26 python=3.12 -y
 conda activate yolo26
+python -m pip install --upgrade pip
 python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 python -m pip install -r requirements.txt
+```
+
+这里的 PyTorch 安装命令适用于本项目已验证的 CUDA 12.8 环境。如果显卡驱动或 CUDA 版本不同，请根据 PyTorch 官方安装页面选择对应命令。
+
+### 3. 验证环境
+
+```bash
+python -c "import torch; print('PyTorch:', torch.__version__); print('CUDA 可用:', torch.cuda.is_available()); print('GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else '无')"
+python -c "import ultralytics; print('Ultralytics:', ultralytics.__version__)"
+```
+
+正常情况下，第一条命令会显示 `CUDA 可用: True` 和本机 NVIDIA GPU 名称。
+
+### 4. 常用 Conda 命令
+
+```bash
+# 进入项目环境
+conda activate yolo26
+
+# 退出当前环境
+conda deactivate
+
+# 查看所有环境
+conda env list
+
+# 删除并重建环境（排查依赖冲突时使用）
+conda remove -n yolo26 --all
 ```
 
 模型权重没有存入仓库。首次运行时，Ultralytics 会自动下载所需的 `yolo26*.pt` 文件。
