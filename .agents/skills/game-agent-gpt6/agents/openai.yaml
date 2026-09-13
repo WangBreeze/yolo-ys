@@ -1,0 +1,6 @@
+interface:
+  display_name: "游戏代理开发 · GPT-6"
+  short_description: "维护本项目游戏插件、视频理解、闭环控制与可追溯的本地学习记忆"
+  default_prompt: "使用 $game-agent-gpt6 为本项目添加游戏适配器，并验证插件接口、闭环执行和本地经验记忆。"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# 本项目专用入口：you-get 下载后默认登记为视频教程。
+exec "$(dirname "$0")/video" download "$@"

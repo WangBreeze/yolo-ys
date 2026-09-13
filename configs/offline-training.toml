@@ -1,0 +1,31 @@
+# Linux 制作视频训练数据；Windows 也可使用此配置进行离线训练。
+extends = "video.toml"
+
+[game]
+id = "video-training"
+version = "unverified-build"
+profile = "ui-labels-v1"
+
+[runtime]
+mode = "replay"
+
+[plugins.capture]
+use = "video.capture"
+[plugins.capture.options]
+# 使用 run 做录像回放时才需要填写本地视频路径。
+path = ""
+
+[plugins.controller]
+use = "dry-run.controller"
+
+[plugins.detector_trainer]
+use = "yolo.detector-trainer"
+[plugins.detector_trainer.options]
+weights = "yolo26n.pt"
+device = 0
+epochs = 50
+imgsz = 640
+batch = 8
+# 默认 0，兼容 Windows 多进程启动；Linux 可按内存与 CPU 情况增加。
+workers = 0
+seed = 0

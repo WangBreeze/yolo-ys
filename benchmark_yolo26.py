@@ -71,10 +71,15 @@ def print_result(result: dict[str, float | str | int]) -> None:
 
 
 def main() -> None:
-    image = cv2.imread(str(IMAGE_PATH))
+    if not IMAGE_PATH.is_file():
+        raise FileNotFoundError(f"无法读取测试图片：{IMAGE_PATH}")
+    # 保留原始 JPEG 解码，兼容 Windows 中文路径。
+    image = cv2.imdecode(np.fromfile(IMAGE_PATH, dtype=np.uint8), cv2.IMREAD_COLOR)
     if image is None:
         raise FileNotFoundError(f"无法读取测试图片：{IMAGE_PATH}")
 
+    if not torch.cuda.is_available():
+        raise RuntimeError("本基准需要 CUDA GPU，请先配置 GPU 版 PyTorch。")
     print(f"GPU: {torch.cuda.get_device_name(0)}")
     print(f"Image: {IMAGE_PATH} ({image.shape[1]}x{image.shape[0]})")
     print(f"Target: wall-clock P95 <= {TARGET_MS:.0f} ms\n")

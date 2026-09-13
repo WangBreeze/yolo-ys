@@ -1,0 +1,31 @@
+# 第一阶段只下载、分类和理解；命令不会创建游戏控制器。
+extends = "demo.toml"
+
+[video_library]
+path = "memory/videos"
+default_category = "tutorial"
+
+[plugins.downloader]
+use = "you-get.downloader"
+[plugins.downloader.options]
+timeout_s = 3600
+# 留空采用站点默认清晰度；需要时填 you-get 提供的 stream ID。
+stream = ""
+
+[plugins.semantic]
+use = "qwen3.semantic"
+[plugins.semantic.options]
+model = "memory/models/Qwen3-VL-2B-Instruct"
+device = "cuda:0"
+attention = "sdpa"
+
+[plugins.speech]
+use = "faster-whisper.speech"
+[plugins.speech.options]
+model = "memory/models/faster-whisper-small"
+device = "cpu"
+compute_type = "int8"
+cpu_threads = 4
+beam_size = 1
+# 空字符串自动检测语言；中文教程也可指定 zh。
+language = ""

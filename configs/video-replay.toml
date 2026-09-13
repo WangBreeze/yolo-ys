@@ -1,0 +1,22 @@
+extends = "demo.toml"
+
+[game]
+id = "video-inspection"
+version = "1"
+profile = "coco-labels-v1"
+[runtime]
+mode = "replay"
+max_frame_age_ms = 3000
+[plugins.capture]
+use = "video.capture"
+[plugins.capture.options]
+path = "memory/videos/tutorial.mp4"
+[plugins.perception]
+use = "yolo.perception"
+[plugins.perception.options]
+weights = "yolo26s.pt"
+device = 0
+imgsz = 640
+conf = 0.4
+[plugins.controller]
+use = "dry-run.controller"

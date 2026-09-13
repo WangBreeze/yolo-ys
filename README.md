@@ -1,6 +1,69 @@
-# YOLO26 本机推理与性能测试
+# 本地游戏模仿框架与 YOLO26 性能测试
 
-这个项目使用 Ultralytics YOLO26 在 NVIDIA GPU 上进行图片检测，并测试 2K 图片从 JPEG 解码到检测完成的端到端延迟。
+本项目提供插件式游戏代理：理解本地教程、根据当前游戏状态操作、验证结果，并把教程与执行经验保存在本目录。保留原有 Ultralytics YOLO26 图片检测和 2K 性能测试。
+
+[项目路线](docs/roadmap.md) · [开发 Wiki](docs/wiki/README.md) · [开发流程](docs/wiki/development.md) · [验证记录](docs/validation.md)
+
+## Linux 训练与 Windows 运行
+
+Linux 用于下载视频、读取语义、制作标注数据集和训练视觉模型；Windows 使用独立的窗口采集与 SendInput 插件运行游戏。Windows 默认配置使用 dry-run。当前在 Linux 完成离线验证，Windows 游戏实机尚未测试。
+
+Windows 在项目目录先运行 `python tools/setup-project.py --profile windows`，随后用 `tools\game-agent.cmd demo` 检查环境。视频功能使用 `tools\youget.cmd`、`tools\video.cmd`；安装、窗口接入、Linux 标注训练和迁移方式见 [双平台使用说明](docs/windows-linux.md)。
+
+已提供 `prepare-dataset`、`build-dataset`、`check-dataset`、`train-detector`，视觉训练与原来的动作经验 `train` 分开。当前原神教程已生成 32 个待标注帧；只有完成标注并准备独立验证素材后才进行正式训练。
+
+## 第一阶段：下载教程并理解内容
+
+`you-get` 下载完成后默认归类为“视频教程”，保留原始流。理解是独立步骤，输出中文摘要、分段观察、可能的操作目的、不确定内容和实际耗时。
+
+```bash
+conda activate yolo26
+bash tools/setup-video.sh
+.venv/bin/python tools/fetch-video-models.py
+./tools/youget '视频链接'
+./tools/video videos
+./tools/video understand 视频编号
+```
+
+工具、模型和语义记忆均留在本项目。默认使用 Qwen3-VL-2B、faster-whisper small；快速模式采样 12 帧，支持细化、批量复用模型和结果缓存。下载不做剪辑、拼接或转码。完整命令和速度取舍见 [视频下载与语义理解](docs/video-stage1.md)。
+
+## 游戏框架快速开始
+
+基础框架只需要 Python 3.11+，可直接在项目目录运行：
+
+```bash
+conda activate yolo26
+python -m game_agent doctor
+python -m game_agent demo
+python -m game_agent recall 购买
+python -m game_agent train
+python -m game_agent --config configs/learned-demo.toml demo
+```
+
+这个流程实际执行“打开商店 → 购买 → 装备”的模拟任务、持久化经验，再替换为学习得到的动作策略。`memory/game-agent.sqlite3` 和 `memory/models/action-memory.json` 留在本机，默认不提交 Git。
+
+当前交付是可运行的通用框架，demo 使用动作驱动的模拟游戏和人工标注教程。接入真实游戏需要本机窗口信息、游戏专用感知/键位配置和教程。Qwen3/Whisper 视频语义已在 Linux 实测；Hyprland/uinput、Windows/MSS/SendInput 已提供实现，桌面联动仍需实机验收。
+
+原有八类插件分别负责教程、采集、感知、规划、策略、控制、记忆和训练；视频功能另增下载、语音、语义角色，离线视觉训练新增 detector_trainer。通过 TOML 清单和配置替换，核心不依赖具体模型。`train` 是动作经验表学习，`train-detector` 是 YOLO 视觉模型训练。下载、理解和离线视觉训练命令不会创建游戏输入控制器。
+
+- [架构与模块边界](docs/architecture.md)
+- [插件开发、视频理解与真实游戏接入](docs/plugins.md)
+- [记忆与训练流程](docs/learning.md)
+- [GPT-6 技能适配检查](docs/skills-audit.md)
+- [仅本项目使用的技能](.agents/skills/game-agent-gpt6/SKILL.md)
+- [验证结果与限制](docs/validation.md)
+
+其他命令：
+
+```bash
+python -m game_agent plugins
+python -m game_agent ingest examples/shop-tutorial.json --output memory/parsed-plan.json
+python -m game_agent run --plan memory/parsed-plan.json
+python -m game_agent export --output memory/datasets/verified.jsonl
+python -m unittest discover -s tests -v
+```
+
+每条运行命令输出 run_id、状态和测量到的 tick P95。模拟耗时不能代替实机延迟；只有发送过动作并观察到成功的对应模式轨迹才作为可学习经验。
 
 ## 环境
 

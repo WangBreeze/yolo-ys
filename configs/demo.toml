@@ -1,0 +1,35 @@
+schema_version = 1
+project_root = ".."
+
+[game]
+id = "demo-shop"
+version = "1"
+profile = "keyboard-v1"
+
+[runtime]
+mode = "simulation"
+tick_hz = 30
+max_ticks = 100
+max_frame_age_ms = 500
+max_action_ms = 200
+allowed_keys = ["B", "1", "E"]
+stop_file = "memory/STOP"
+
+[plugins.capture]
+use = "demo.capture"
+[plugins.perception]
+use = "facts.perception"
+[plugins.planner]
+use = "sequential.planner"
+[plugins.policy]
+use = "template.policy"
+[plugins.controller]
+use = "demo.controller"
+[plugins.memory]
+use = "sqlite.memory"
+[plugins.memory.options]
+path = "memory/game-agent.sqlite3"
+[plugins.tutorial]
+use = "annotated.tutorial"
+[plugins.learner]
+use = "action-memory.learner"

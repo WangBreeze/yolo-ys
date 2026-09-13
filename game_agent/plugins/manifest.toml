@@ -1,0 +1,146 @@
+[[plugins]]
+id = "demo.capture"
+role = "capture"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.demo:DemoCapture"
+
+[[plugins]]
+id = "video.capture"
+role = "capture"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.video:VideoCapture"
+
+[[plugins]]
+id = "hyprland.capture"
+role = "capture"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.hyprland:HyprlandCapture"
+
+[[plugins]]
+id = "facts.perception"
+role = "perception"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.demo:FactsPerception"
+
+[[plugins]]
+id = "yolo.perception"
+role = "perception"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.yolo:YoloPerception"
+
+[[plugins]]
+id = "sequential.planner"
+role = "planner"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.planner:SequentialPlanner"
+
+[[plugins]]
+id = "template.policy"
+role = "policy"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.policy:TemplatePolicy"
+
+[[plugins]]
+id = "experience.policy"
+role = "policy"
+version = "1.0.1"
+api_version = 1
+factory = "game_agent.plugins.policy:ExperiencePolicy"
+
+[[plugins]]
+id = "demo.controller"
+role = "controller"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.demo:DemoController"
+
+[[plugins]]
+id = "dry-run.controller"
+role = "controller"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.demo:DryRunController"
+
+[[plugins]]
+id = "uinput.controller"
+role = "controller"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.hyprland:UInputController"
+
+[[plugins]]
+id = "annotated.tutorial"
+role = "tutorial"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.tutorial:AnnotatedTutorial"
+
+[[plugins]]
+id = "qwen-video.tutorial"
+role = "tutorial"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.tutorial:QwenVideoTutorial"
+
+[[plugins]]
+id = "sqlite.memory"
+role = "memory"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.memory:SQLiteMemory"
+
+[[plugins]]
+id = "action-memory.learner"
+role = "learner"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.learner:ActionMemoryLearner"
+
+[[plugins]]
+id = "you-get.downloader"
+role = "downloader"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.download:YouGetDownloader"
+
+[[plugins]]
+id = "qwen3.semantic"
+role = "semantic"
+version = "1.0.2"
+api_version = 1
+factory = "game_agent.plugins.semantic:QwenSemantic"
+
+[[plugins]]
+id = "faster-whisper.speech"
+role = "speech"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.speech:FasterWhisperSpeech"
+
+[[plugins]]
+id = "windows.capture"
+role = "capture"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.windows:WindowsCapture"
+
+[[plugins]]
+id = "windows.controller"
+role = "controller"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.windows:WindowsController"
+
+[[plugins]]
+id = "yolo.detector-trainer"
+role = "detector_trainer"
+version = "1.0.0"
+api_version = 1
+factory = "game_agent.plugins.detector_training:YoloDetectorTrainer"

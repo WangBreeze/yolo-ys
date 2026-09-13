@@ -1,0 +1,7 @@
+extends = "offline-training.toml"
+
+[game]
+id = "genshin"
+# 视频没有可靠的游戏 build 信息，保留未知标记，不冒充当前 Windows 游戏版本。
+version = "tutorial-build-unknown"
+profile = "food-delivery-ui-v1"

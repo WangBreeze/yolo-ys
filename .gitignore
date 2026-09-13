@@ -11,3 +11,18 @@ runs/
 # 本地测试图片；保留可复现基准所需的 2K 人物图片
 *.jpg
 !people_2k.jpg
+
+# Local agent experience, recordings, downloaded models and build artifacts
+memory/*
+!memory/README.md
+!memory/project.md
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+.codebase-memory/
+configs/*.local.toml
+
+# 本机临时会话文件，名称也不兼容 Windows
+/:memory:.ses

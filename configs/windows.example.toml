@@ -1,0 +1,36 @@
+# 先复制成 windows.local.toml，填写实际游戏资料与窗口信息。
+extends = "demo.toml"
+
+[game]
+id = "configure-your-game"
+version = "configure-game-version"
+profile = "configure-bindings-ui-profile"
+
+[runtime]
+mode = "live"
+tick_hz = 10
+max_ticks = 1000
+max_frame_age_ms = 1000
+allowed_keys = ["B", "E", "F", "1", "ESC", "W", "A", "S", "D", "SPACE"]
+
+[plugins.capture]
+use = "windows.capture"
+[plugins.capture.options]
+# 执行 windows-info 并切到游戏，可取得精确值。至少填一个；两者都填时同时匹配。
+window_class = ""
+window_title = ""
+
+# 首次接入保持 dry-run。定位和成功条件验证后，再按 Windows 文档启用输入插件。
+[plugins.controller]
+use = "dry-run.controller"
+
+[plugins.perception]
+use = "yolo.perception"
+[plugins.perception.options]
+weights = "memory/models/game-detector.pt"
+device = 0
+imgsz = 640
+conf = 0.4
+
+[plugins.tutorial]
+use = "annotated.tutorial"

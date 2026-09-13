@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "game": {"id": "demo-shop", "version": "1", "profile": "keyboard-v1"},
+  "title": "打开商店，购买并装备剑",
+  "success": {"has_sword": true, "equipped": true},
+  "provenance": {"kind": "hand-annotated-demo", "note": "模拟游戏示范，不是自动解析的真实视频"},
+  "steps": [
+    {"id": "open", "goal": "打开商店", "pre": {"shop_open": false},
+     "post": {"shop_open": true}, "action": {"kind": "key", "key": "B"}, "source_seconds": 0},
+    {"id": "buy", "goal": "购买剑", "pre": {"shop_open": true},
+     "post": {"has_sword": true}, "action": {"kind": "key", "key": "1"}, "source_seconds": 2},
+    {"id": "equip", "goal": "装备剑", "pre": {"has_sword": true},
+     "post": {"equipped": true}, "action": {"kind": "key", "key": "E"}, "source_seconds": 4}
+  ]
+}

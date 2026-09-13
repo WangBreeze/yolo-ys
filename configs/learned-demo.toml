@@ -1,0 +1,7 @@
+extends = "demo.toml"
+
+# Replace one plugin, preserving all other modules and configuration.
+[plugins.policy]
+use = "experience.policy"
+[plugins.policy.options]
+model = "memory/models/action-memory.json"

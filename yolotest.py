@@ -22,13 +22,16 @@ measure_runs = 30
 
 if not image_path.is_file():
     raise FileNotFoundError(f"请把待检测图片放到：{image_path}")
+if not torch.cuda.is_available():
+    raise RuntimeError("本脚本测量 CUDA GPU 性能；请先安装与显卡驱动匹配的 GPU 版 PyTorch。")
 
 # 仓库不保存体积较大的模型权重；本地不存在时由 Ultralytics 自动下载。
 model = YOLO(model_path if model_path.exists() else model_path.name)
 
 # GPU 第一次运行会初始化 CUDA 和模型内核，时间明显偏高，因此先预热，
 # 预热数据不计入最终结果。
-warmup_image = cv2.imread(str(image_path))
+# 用文件字节解码，兼容 Windows 下带中文的项目目录。
+warmup_image = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), cv2.IMREAD_COLOR)
 if warmup_image is None:
     raise RuntimeError(f"图片读取失败：{image_path}")
 
@@ -54,7 +57,7 @@ for _ in range(measure_runs):
     total_started = perf_counter()
 
     decode_started = perf_counter()
-    image = cv2.imread(str(image_path))
+    image = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), cv2.IMREAD_COLOR)
     decode_times.append((perf_counter() - decode_started) * 1000)
 
     predict_started = perf_counter()

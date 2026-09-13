@@ -1,0 +1,35 @@
+extends = "demo.toml"
+
+# Copy and fill in the actual game/version/bindings and trained detector.
+[game]
+id = "configure-your-game"
+version = "configure-game-version"
+profile = "configure-bindings-ui-profile"
+[runtime]
+mode = "live"
+tick_hz = 10
+max_frame_age_ms = 1000
+allowed_keys = ["B", "E", "1", "ESC", "W", "A", "S", "D", "SPACE"]
+[plugins.capture]
+use = "hyprland.capture"
+[plugins.capture.options]
+window_class = ""
+[plugins.controller]
+use = "uinput.controller"
+[plugins.controller.options]
+window_class = ""
+[plugins.perception]
+use = "yolo.perception"
+[plugins.perception.options]
+weights = "memory/models/game-detector.pt"
+device = 0
+imgsz = 640
+[plugins.tutorial]
+use = "qwen-video.tutorial"
+[plugins.tutorial.options]
+model = "memory/models/Qwen2.5-VL-3B-Instruct"
+max_frames = 16
+# Must match the detector/OCR output; [] deliberately fails before loading a model.
+observable_facts = []
+# Optional narration inputs: transcript = "memory/tutorial.srt"
+# Or whisper_weights = "memory/models/large-v3-turbo.pt" (requires [asr] extra).

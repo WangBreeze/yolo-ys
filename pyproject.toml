@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yolo-game-agent"
+version = "0.1.0"
+description = "Local, plugin-based video-to-game agent and experience memory"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+vision = ["numpy>=2", "opencv-python>=4.10", "ultralytics>=8.4.144,<9"]
+vlm = ["transformers>=4.49,<5", "accelerate>=1", "Pillow>=10", "torch>=2.6", "opencv-python>=4.10"]
+video = ["you-get>=0.4.1743,<0.5", "transformers>=4.57,<5", "accelerate>=1,<2", "Pillow>=10", "torch>=2.6", "opencv-python>=4.10", "faster-whisper>=1.2,<2"]
+linux = ["evdev>=1.7; sys_platform == 'linux'"]
+windows = ["mss>=10.2,<12; sys_platform == 'win32'", "numpy>=2"]
+training = ["numpy>=2", "opencv-python>=4.10", "ultralytics>=8.4.144,<9"]
+asr = ["openai-whisper>=20240930"]
+
+[project.scripts]
+game-agent = "game_agent.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["game_agent*"]
+
+[tool.setuptools.package-data]
+"game_agent.plugins" = ["manifest.toml"]

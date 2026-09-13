@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+if [[ ! -x .venv/bin/python ]]; then
+    echo '请先激活 yolo26 环境并运行 bash tools/setup-video.sh' >&2
+    exit 1
+fi
+exec .venv/bin/python -m game_agent --config configs/video.toml "$@"
