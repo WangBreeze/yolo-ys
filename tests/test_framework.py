@@ -5,6 +5,7 @@ import sqlite3
 import tempfile
 import types
 import unittest
+from contextlib import closing
 from dataclasses import asdict, replace
 from pathlib import Path
 from time import monotonic_ns
@@ -246,11 +247,11 @@ class MemoryAndExecutionTests(unittest.TestCase):
 
     def test_future_memory_schema_is_not_overwritten(self):
         path = self.root / "future.db"
-        with sqlite3.connect(path) as db:
+        with closing(sqlite3.connect(path)) as db, db:
             db.execute("PRAGMA user_version=42")
         with self.assertRaisesRegex(ValueError, "migration required"):
             SQLiteMemory(self.context(), {"path": "future.db"})
-        with sqlite3.connect(path) as db:
+        with closing(sqlite3.connect(path)) as db:
             self.assertEqual(db.execute("PRAGMA user_version").fetchone()[0], 42)
 
     def test_unknown_state_is_not_false(self):

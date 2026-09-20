@@ -113,8 +113,9 @@ class VideoLibrary:
             if not destination.exists():
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.move(str(staging), str(destination))
+            project_root = Path(self.context.root).resolve()
             for item in media:
-                item["path"] = (destination / item["name"]).relative_to(self.context.root).as_posix()
+                item["path"] = (destination / item["name"]).resolve().relative_to(project_root).as_posix()
             existing = self.db.execute("SELECT record FROM assets WHERE id=?", (asset_id,)).fetchone()
             if existing:
                 return self.classify(asset_id, selected) if category else json.loads(existing[0])

@@ -7,6 +7,7 @@ import sqlite3
 import subprocess
 import tempfile
 import unittest
+from contextlib import closing
 from pathlib import Path
 from unittest.mock import patch
 
@@ -202,11 +203,11 @@ class VideoWorkflowTests(unittest.TestCase):
     def test_future_catalog_schema_is_rejected_without_overwriting(self):
         folder = self.root / "memory/videos"
         folder.mkdir(parents=True)
-        with sqlite3.connect(folder / "catalog.sqlite3") as db:
+        with closing(sqlite3.connect(folder / "catalog.sqlite3")) as db, db:
             db.execute("PRAGMA user_version=99")
         with self.assertRaises(ValueError):
             VideoLibrary(self.context)
-        with sqlite3.connect(folder / "catalog.sqlite3") as db:
+        with closing(sqlite3.connect(folder / "catalog.sqlite3")) as db:
             self.assertEqual(db.execute("PRAGMA user_version").fetchone()[0], 99)
 
     def test_cache_survives_application_restart_and_keeps_original_compute_time(self):
