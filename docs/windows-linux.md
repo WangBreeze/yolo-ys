@@ -176,7 +176,7 @@ window_title = "填写与 capture 相同的精确 title"
 
 Linux 的 68 项单元测试、原模拟闭环、动作经验训练和策略替换通过。另以两个不同的合成录像生成 4 张训练图和 4 张验证图，CPU 真实训练 YOLO26n 一轮并产出 best.pt；训练函数耗时约 2.49 秒，测试连接守卫未发现 Python socket.connect 外连。该小样本指标为零，只证明数据与训练链路能运行，不能用作游戏模型。
 
-Windows 采集和输入在 Linux 以假窗口、假输入设备验证：结构体布局、负坐标显示器、焦点与窗口变化、陈旧画面、停止信号和异常释放。已提供 GitHub Actions 的 Linux/Windows 测试配置，但没有已验证的远端运行结果，也没有 Windows 实机结果；本地提交不会触发远端 CI。当前进度见 [项目路线](roadmap.md)，完整结果见 [验证记录](validation.md)。
+Windows 采集和输入在 Linux 以假窗口、假输入设备验证：结构体布局、负坐标显示器、焦点与窗口变化、陈旧画面、停止信号和异常释放。GitHub Actions 运行 `35504533733` 已在 Ubuntu 和 Windows 上通过离线测试、demo 与动作经验流程；它使用假设备，仍没有 Windows 真实游戏窗口或输入结果。当前进度见 [项目路线](roadmap.md)，完整结果见 [验证记录](validation.md)。
 
 ```bash
 .venv/bin/python -m unittest discover -s tests -v

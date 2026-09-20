@@ -15,7 +15,7 @@
 | `python -m game_agent --config configs/learned-demo.toml demo` | 替换为动作经验策略后完成同一模拟任务 |
 | Windows 插件测试 | 在 Linux 使用假窗口/输入设备检查结构体布局、负坐标、焦点与窗口变化、画面时效、停止及异常释放；不发送真实输入 |
 | 数据集检查 | 未复核帧会被拒绝；检查录制组/视频/图片跨集合泄漏、路径、坐标和内容哈希 |
-| 跨平台 CI | 已提供 Ubuntu/Windows 工作流；没有已验证的远端运行结果，本地提交不等于 CI 已执行 |
+| 跨平台 CI | GitHub Actions 运行 `35504533733` 在提交 `e4267a2` 上通过：Ubuntu 与 Windows 均完成 75 项测试、demo、train 和 learned-demo；这仍不代表真实 Windows 游戏输入已验收 |
 | 本次第二阶段改动 | `list-commands`、P10 提取/校验、20 集批量提取/逐文件校验和差异空白检查通过 |
 
 回归使用项目解释器；复现命令见 [开发流程](wiki/development.md)。基础框架不需要下载模型或创建真实输入后端。

@@ -82,6 +82,6 @@ P11–P20 随后全部使用 balanced 完成解析，共 6870.35 秒（1 小时 
 
 本轮增加 5 项命令工作流测试后，项目共 73 项单元测试通过，原模拟 demo 继续成功。`list-commands`、P10 单集提取与校验、20 集逐文件校验和差异空白检查均通过。
 
-GitHub Windows CI 暴露两项跨平台问题：未规范化的 `Context.root` 会让 Windows 临时目录中的合法输出被误判为越界；Windows 的 `st_ctime` 是创建时间，不能作为同大小、恢复 mtime 后的内容变化标记。输入/输出路径现在基于已解析的 root 做边界判断，Windows 摘要缓存改为重新计算内容哈希。新增两个回归测试后共 75 项测试及 demo 在 Linux 通过，等待远端 Windows CI 复验。
+GitHub Windows CI 暴露两项跨平台问题：未规范化的 `Context.root` 会让 Windows 临时目录中的合法输出被误判为越界；Windows 的 `st_ctime` 是创建时间，不能作为同大小、恢复 mtime 后的内容变化标记。输入/输出路径现在基于已解析的 root 做边界判断，Windows 摘要缓存改为重新计算内容哈希。新增两个回归测试后共 75 项测试及 demo 在 Linux 通过。
 
-第一次修复后 Windows CI 的 42 个路径错误降为 4 个：视频库另有一处对未规范化 root 调用 `relative_to`，两个未来 schema 测试则误以为 SQLite 连接的上下文管理器会关闭连接。视频媒体路径现在基于解析后的项目 root 保存；测试使用 `closing` 明确释放 SQLite 文件句柄，避免 Windows 临时目录清理时出现 WinError 32。相关 4 项定向测试、完整 75 项测试和 demo 在 Linux 通过，等待第二次远端复验。
+第一次修复后 Windows CI 的 42 个路径错误降为 4 个：视频库另有一处对未规范化 root 调用 `relative_to`，两个未来 schema 测试则误以为 SQLite 连接的上下文管理器会关闭连接。视频媒体路径现在基于解析后的项目 root 保存；测试使用 `closing` 明确释放 SQLite 文件句柄，避免 Windows 临时目录清理时出现 WinError 32。相关 4 项定向测试、完整 75 项测试和 demo 在 Linux 通过；提交 `e4267a2` 的 GitHub Actions 运行 `35504533733` 随后在 Ubuntu 与 Windows 全部通过。该结果只验证假设备离线流程，不代表 Windows 真实游戏输入。
