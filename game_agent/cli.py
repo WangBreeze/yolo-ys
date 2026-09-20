@@ -13,6 +13,7 @@ from .registry import registry_for
 from .runtime import Application
 from .video_cli import COMMANDS as VIDEO_COMMANDS, add_commands, handle as handle_video
 from .training_cli import COMMANDS as TRAINING_COMMANDS, add_commands as add_training_commands, handle as handle_training
+from .command_cli import COMMANDS as COMMAND_COMMANDS, add_commands as add_command_commands, handle as handle_commands
 
 
 def doctor(context, registry):
@@ -95,9 +96,11 @@ def main(argv=None):
     windows.add_argument("--output", help="可选：保存 PNG 截图到本项目")
     add_commands(commands)
     add_training_commands(commands)
+    add_command_commands(commands)
     args = parser.parse_args(argv)
     try:
-        default_config = ("configs/offline-training.toml" if args.command in TRAINING_COMMANDS else
+        default_config = ("configs/genshin-offline.toml" if args.command in COMMAND_COMMANDS else
+                          "configs/offline-training.toml" if args.command in TRAINING_COMMANDS else
                           "configs/video.toml" if args.command in VIDEO_COMMANDS else "configs/demo.toml")
         context = load_config(args.config or default_config)
         registry = registry_for(context)
@@ -137,6 +140,8 @@ def main(argv=None):
                     result["screenshot"] = str(path)
                 finally:
                     capture.close()
+        elif args.command in COMMAND_COMMANDS:
+            result = handle_commands(args, context)
         else:
             with Application(context, registry) as app:
                 if args.command in VIDEO_COMMANDS:

@@ -27,6 +27,22 @@ bash tools/setup-video.sh
 
 工具、模型和语义记忆均留在本项目。默认使用 Qwen3-VL-2B、faster-whisper small；快速模式采样 12 帧，支持细化、批量复用模型和结果缓存。下载不做剪辑、拼接或转码。完整命令和速度取舍见 [视频下载与语义理解](docs/video-stage1.md)。
 
+## 第二阶段：语音转候选游戏命令
+
+第二阶段把带时间语音与画面语义整理成带证据的候选语义命令，经人工复核后编译为版本化 Plan。当前原神词典包含 28 个命令，动作分类和安全约束参考本机 BetterGI 固定提交；语音不会直接变成固定按键，也不会在 Linux 上操作游戏。
+
+```bash
+# 查看词典
+python -m game_agent list-commands
+
+# 从第一阶段报告生成候选命令，然后独立校验
+python -m game_agent extract-commands memory/videos/reports/eef46c4fbf481c89cd0921f96bb69e4fed3fcb86b4838cd4680677b94cc56d82.json \
+  --output memory/commands/BV1P6SNYREo8/P10.json
+python -m game_agent check-commands memory/commands/BV1P6SNYREo8/P10.json
+```
+
+20 个分P的本地候选结果位于 `memory/commands/BV1P6SNYREo8/`，汇总入口为 `index.json`。开始实际执行前仍需人工复核、真实游戏 build/profile、键位、可观察状态、感知模型和 Windows dry-run 验证。完整环境、数据和验收条件见 [第二阶段说明](docs/voice-command-stage2.md)。
+
 ## 游戏框架快速开始
 
 基础框架只需要 Python 3.11+，可直接在项目目录运行：

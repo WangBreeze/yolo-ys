@@ -113,7 +113,7 @@ factory = "game_agent.plugins.download:YouGetDownloader"
 [[plugins]]
 id = "qwen3.semantic"
 role = "semantic"
-version = "1.0.2"
+version = "1.0.4"
 api_version = 1
 factory = "game_agent.plugins.semantic:QwenSemantic"
 

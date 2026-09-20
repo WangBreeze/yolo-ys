@@ -6,11 +6,17 @@
 
 第一阶段另外提供 `download → 原视频与分类 → understand → 候选语义报告`，与下面的游戏 Plan/执行链独立。下载、语音、语义为三个新增可替换角色，原游戏角色接口兼容；详见 [第一阶段设计](video-stage1.md)。
 
+教程第二阶段在两条链路之间增加 `候选语义报告 → 游戏词典纠错 → 候选语义命令 → 人工复核 → Plan`。它保存意图、目标、来源时间和可观察条件，不从旁白直接猜固定按键；环境和验收门槛见 [语音转候选游戏命令](voice-command-stage2.md)。
+
 双平台适配另增 `prepare-dataset → 复核标注 → build-dataset → detector_trainer.train` 离线链路。Linux 负责制作视频训练数据；Windows 的 `windows.capture` 与 `windows.controller` 替换桌面接口，核心数据协议保持 API v1。检测数据集 schema v1 独立于 Plan、动作经验和 SQLite；`experience.policy` 1.0.1 仅修正 UTF-8 加载，继续读取原 schema v1 产物。详见 [双平台工作流](windows-linux.md)。
 
 ```mermaid
 flowchart TD
-    video[本地教程视频 / 人工标注 JSON] --> tutorial[教程插件：本地 Qwen / JSON]
+    video[本地教程视频] --> semantic[带时间语音与候选画面语义]
+    semantic --> command[候选语义命令：意图、目标、证据]
+    command --> review[人工复核]
+    annotated[人工标注 JSON] --> tutorial[教程插件]
+    review --> tutorial
     tutorial --> plan[版本化 Plan：目标、步骤、成功条件、来源]
     plan --> memory[本地 SQLite 记忆]
     memory --> runtime[运行时与技能调度]

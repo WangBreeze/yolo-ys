@@ -1,6 +1,6 @@
 # 验证记录
 
-更新日期：2026-09-13。入口：[项目路线](roadmap.md) · [开发 Wiki](wiki/README.md)。
+更新日期：2026-09-20。入口：[项目路线](roadmap.md) · [开发 Wiki](wiki/README.md)。
 
 当前环境为 Linux、Conda `yolo26` / Python 3.12.14，项目 `.venv` 复用该环境的 PyTorch。以下分别记录代码回归、真实媒体、合成训练和迁移结果。Windows 原生运行与真实游戏输入尚未验收。
 
@@ -8,14 +8,15 @@
 
 | 验证 | 结果与范围 |
 |---|---|
-| `python -m unittest discover -s tests -v` | 68 项通过；覆盖插件替换、记忆隔离、视频库与语义缓存、Windows 假设备、标注/数据集隔离和迁移打包 |
+| `python -m unittest discover -s tests -v` | 73 项通过；覆盖插件替换、命令 schema/词典/提取、记忆隔离、视频库与语义缓存、Windows 假设备、标注/数据集隔离和迁移打包 |
 | `python -m game_agent demo` | 模拟商店任务成功，观察到购买和装备条件 |
+| 原神候选命令 | P1–P20 共生成 674 条，54 条保留语音纠错记录；20 个文件均通过 schema 与词典校验；尚未人工复核或编译为 Plan |
 | `python -m game_agent train` | 从已验证的模拟轨迹生成动作经验表；不代表神经网络训练或实机能力 |
 | `python -m game_agent --config configs/learned-demo.toml demo` | 替换为动作经验策略后完成同一模拟任务 |
 | Windows 插件测试 | 在 Linux 使用假窗口/输入设备检查结构体布局、负坐标、焦点与窗口变化、画面时效、停止及异常释放；不发送真实输入 |
 | 数据集检查 | 未复核帧会被拒绝；检查录制组/视频/图片跨集合泄漏、路径、坐标和内容哈希 |
 | 跨平台 CI | 已提供 Ubuntu/Windows 工作流；没有已验证的远端运行结果，本地提交不等于 CI 已执行 |
-| 本次文档维护 | 15 份 Markdown 的 63 个本地链接目标均存在，差异空白检查通过；保留此前通过的 68 项代码回归结果 |
+| 本次第二阶段改动 | `list-commands`、P10 提取/校验、20 集批量提取/逐文件校验和差异空白检查通过 |
 
 回归使用项目解释器；复现命令见 [开发流程](wiki/development.md)。基础框架不需要下载模型或创建真实输入后端。
 
@@ -41,7 +42,7 @@
 
 ## 历史基线与待验证项
 
-初版框架为 28 项测试通过，视频阶段扩充至 43 项，双平台与视觉训练阶段为 68 项。初版离线 wheel 构建、项目技能检查、demo → train → learned-demo → recall → export 均通过；历史记录保留于 [项目记忆](../memory/project.md)。
+初版框架为 28 项测试通过，视频阶段扩充至 43 项，双平台与视觉训练阶段为 68 项，候选命令阶段为 73 项。初版离线 wheel 构建、项目技能检查、demo → train → learned-demo → recall → export 均通过；历史记录保留于 [项目记忆](../memory/project.md)。
 
 仍待验证：Windows 实际窗口/DPI/截图/输入兼容性、真实游戏任务与恢复、独立录制数据集的检测质量、2K 实机延迟目标。Linux uinput/截图联动也尚未实机验收。单元测试、合成素材或迁移检查均不能替代这些结果。
 

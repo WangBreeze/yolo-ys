@@ -28,6 +28,7 @@ python -m game_agent --config configs/learned-demo.toml demo
 |---|---|---|
 | 原视频获取、分类和来源 | downloader 插件、视频库 | 原文件一致性、失败不入库、分类可恢复 |
 | 语音或画面理解 | speech / semantic 插件 | 证据与推断区分、时间范围、缓存失效 |
+| 游戏词典与候选命令 | command contracts / workflow、游戏词典配置 | 原始语音与纠错可追溯、参数白名单、候选/复核状态隔离 |
 | 视频抽帧、标注与检测训练 | training_data、detector_trainer | 人工复核标记、分组隔离、坐标、文件哈希与结果版本 |
 | 当前窗口画面 | capture 插件 | 像素格式、客户区尺寸、时间戳、窗口身份与焦点 |
 | 目标、文字和游戏状态 | perception 插件 | 类别映射、归一化目标框、可观察条件 |
@@ -35,7 +36,7 @@ python -m game_agent --config configs/learned-demo.toml demo
 | 操作系统键鼠输入 | controller 插件 | 授权模式、允许键位、持续时间、停止与异常释放 |
 | 经验保存、检索和动作学习 | memory / learner 插件 | simulation/live 分离、前后观测、确实执行和成功验证 |
 
-当前协议与工厂清单位于 [contracts.py](../../game_agent/contracts.py)、[视频协议](../../game_agent/video_contracts.py)、[检测训练协议](../../game_agent/training_contracts.py) 和 [插件清单](../../game_agent/plugins/manifest.toml)。具体接口表和示例见 [架构](../architecture.md)、[插件说明](../plugins.md)。
+当前协议与工厂清单位于 [contracts.py](../../game_agent/contracts.py)、[候选命令协议](../../game_agent/command_contracts.py)、[视频协议](../../game_agent/video_contracts.py)、[检测训练协议](../../game_agent/training_contracts.py) 和 [插件清单](../../game_agent/plugins/manifest.toml)。具体接口表和示例见 [架构](../architecture.md)、[插件说明](../plugins.md)。
 
 ## 插件、配置和兼容性
 

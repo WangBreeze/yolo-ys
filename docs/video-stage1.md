@@ -34,6 +34,51 @@ ffprobe 只读取媒体信息。只有下载成功且存在可读取视频流才
 
 下载清晰度采用站点默认值，可在 `plugins.downloader.options.stream` 指定 you-get 的 stream ID。站点改版、登录限制或不支持的站点仍可能导致下载失败，以工具实际结果为准。
 
+### 登录视频和 Bilibili 多分P
+
+项目内的 Cookie 文件统一放在 `memory/auth/`，该目录随本机项目数据保存并被 Git 忽略。把 Chrome 登录状态导出为 Netscape 格式后，保存到：
+
+```text
+memory/auth/bilibili-cookies.txt
+```
+
+Cookie 相当于登录凭证，只保留当前用户读写权限：
+
+```bash
+chmod 600 memory/auth/bilibili-cookies.txt
+```
+
+当前 `./tools/youget` 封装只接受单个 URL 和分类参数，尚未暴露原生 you-get 的 `--cookies`、`--playlist`。登录视频或同一 BV 的多分P使用项目环境中的原生命令。先读取全部分P和登录后可用的清晰度，不下载媒体：
+
+```bash
+.venv/bin/you-get \
+  --playlist \
+  --cookies memory/auth/bilibili-cookies.txt \
+  --info \
+  "https://www.bilibili.com/video/BV1P6SNYREo8/"
+```
+
+下载全部分P到项目本地目录，优先使用兼容性较好的 1080P AVC：
+
+```bash
+mkdir -p memory/import
+
+.venv/bin/you-get \
+  --playlist \
+  --cookies memory/auth/bilibili-cookies.txt \
+  --format dash-flv-AVC \
+  --output-dir memory/import \
+  "https://www.bilibili.com/video/BV1P6SNYREo8/"
+```
+
+需要 1080P60 时将格式改为 `dash-flv_p60-AVC`。格式名称以带 Cookie 的 `--info` 实际输出为准，并非所有视频都提供相同清晰度或编码。下载完成后，如需写入项目分类库，对每个合并完成的视频运行：
+
+```bash
+./tools/video add-video "/完整路径/某个分P.mp4" --category tutorial
+```
+
+直接把 Chrome 的 `Default/Cookies` 数据库传给 you-get 无效：Chrome 使用加密的 `cookies` 表，而当前 you-get 只直接读取 Netscape `cookies.txt` 或 Firefox `moz_cookies` SQLite。不要提交、分享或在命令输出中打印 Cookie 内容。
+
 ```text
 memory/videos/
   catalog.sqlite3                分类、来源和校验值
@@ -118,7 +163,7 @@ memory/videos/
 
 Qwen3-VL-2B 使用本机 RTX 5070 Ti Laptop GPU，faster-whisper small 使用 CPU。视觉权重 SHA-256 与官方发布文件一致；模型均已准备到本项目，`./tools/video doctor` 通过。
 
-最终语义插件为 `qwen3.semantic` 1.0.2。相同 12 秒合成视频、fast 模式的单次检查结果如下；不含 Python 进程启动时间，未清空操作系统文件缓存。
+当时用于 12 秒合成视频验证的语义插件为 `qwen3.semantic` 1.0.2。相同视频、fast 模式的单次检查结果如下；不含 Python 进程启动时间，未清空操作系统文件缓存。
 
 | 场景 | 总耗时 |
 |---|---:|
@@ -131,3 +176,5 @@ Qwen3-VL-2B 使用本机 RTX 5070 Ti Laptop GPU，faster-whisper small 使用 CP
 输出摘要为“教程演示了在游戏中的购买和装备武器的步骤”，并识别出 100 金币的剑。人工检查也发现了限制：部分观察句推断了画面没有显示的鼠标点击，且一次把 `SWORD EQUIPPED` 误读成 `WORLD EQUIPPED`。所以本阶段只完成了候选语义与性能流程，细节正确率尚未达到游戏动作真值的验收条件；真实教程效果仍需要用户视频验证。
 
 完整计时、转录、输出路径和人工检查记录在 `memory/validation/video-stage1/result.json`，首次加载报告另存 `cold-report.json`。43 项单元测试、原有模拟任务和本地模型检查通过。合成素材的功能通过不等于真实游戏的准确率通过。
+
+长视频真实运行后，语义插件升级到 1.0.4：所有精度统一限制单批 JSON 的摘要和数组长度；模型输出因 token 上限截断为不完整 JSON 时，自动扩大上限重试一次。报告中的 `provenance.semantic.version` 和 `timings.semantic_batches[].generation_attempts` 用于区分插件版本和实际生成次数。
