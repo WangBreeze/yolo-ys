@@ -22,6 +22,7 @@ dist/
 .venv/
 .pytest_cache/
 .codebase-memory/
+.crew/
 configs/*.local.toml
 
 # 本机临时会话文件，名称也不兼容 Windows
