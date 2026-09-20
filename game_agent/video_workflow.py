@@ -12,6 +12,8 @@ from .media import file_sha256, sample_video
 from .video_contracts import PRESETS, REPORT_SCHEMA, validate_description
 from .video_library import probe
 
+_METADATA_DIGEST_CACHE_SAFE = os.name != "nt"
+
 
 def write_json(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -39,7 +41,10 @@ def cached_digest(path, cache):
     signature = [str(path), stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns]
     record_path = cache / "hashes" / (fingerprint(str(path)) + ".json")
     old = read_json(record_path)
-    if old and old.get("signature") == signature:
+    # On Windows st_ctime is file creation time, so a same-size rewrite whose
+    # mtime is restored can retain this entire signature. Re-hash there rather
+    # than returning stale content from a metadata-only cache hit.
+    if _METADATA_DIGEST_CACHE_SAFE and old and old.get("signature") == signature:
         return old["sha256"]
     digest = file_sha256(path)
     after = path.stat()

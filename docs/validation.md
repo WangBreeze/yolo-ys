@@ -8,7 +8,7 @@
 
 | 验证 | 结果与范围 |
 |---|---|
-| `python -m unittest discover -s tests -v` | 73 项通过；覆盖插件替换、命令 schema/词典/提取、记忆隔离、视频库与语义缓存、Windows 假设备、标注/数据集隔离和迁移打包 |
+| `python -m unittest discover -s tests -v` | 75 项通过；覆盖插件替换、命令 schema/词典/提取、记忆隔离、视频库与语义缓存、Windows 路径/缓存兼容和假设备、标注/数据集隔离及迁移打包 |
 | `python -m game_agent demo` | 模拟商店任务成功，观察到购买和装备条件 |
 | 原神候选命令 | P1–P20 共生成 674 条，54 条保留语音纠错记录；20 个文件均通过 schema 与词典校验；尚未人工复核或编译为 Plan |
 | `python -m game_agent train` | 从已验证的模拟轨迹生成动作经验表；不代表神经网络训练或实机能力 |
@@ -42,7 +42,7 @@
 
 ## 历史基线与待验证项
 
-初版框架为 28 项测试通过，视频阶段扩充至 43 项，双平台与视觉训练阶段为 68 项，候选命令阶段为 73 项。初版离线 wheel 构建、项目技能检查、demo → train → learned-demo → recall → export 均通过；历史记录保留于 [项目记忆](../memory/project.md)。
+初版框架为 28 项测试通过，视频阶段扩充至 43 项，双平台与视觉训练阶段为 68 项，候选命令阶段为 73 项，Windows CI 兼容修复后为 75 项。初版离线 wheel 构建、项目技能检查、demo → train → learned-demo → recall → export 均通过；历史记录保留于 [项目记忆](../memory/project.md)。
 
 仍待验证：Windows 实际窗口/DPI/截图/输入兼容性、真实游戏任务与恢复、独立录制数据集的检测质量、2K 实机延迟目标。Linux uinput/截图联动也尚未实机验收。单元测试、合成素材或迁移检查均不能替代这些结果。
 

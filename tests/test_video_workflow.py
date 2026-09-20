@@ -138,6 +138,16 @@ class VideoWorkflowTests(unittest.TestCase):
         os.utime(path, ns=(original.st_atime_ns, original.st_mtime_ns))
         self.assertNotEqual(before, cached_digest(path, self.root / "cache"))
 
+    def test_windows_digest_does_not_trust_creation_time_as_change_time(self):
+        path = self.root / "content.txt"
+        path.write_text("first")
+        cache = self.root / "cache"
+        with patch("game_agent.video_workflow._METADATA_DIGEST_CACHE_SAFE", False), \
+                patch("game_agent.video_workflow.file_sha256", wraps=file_sha256) as digest:
+            cached_digest(path, cache)
+            cached_digest(path, cache)
+        self.assertEqual(digest.call_count, 2)
+
     def test_timed_transcript_included_only_in_matching_segment(self):
         transcript = self.root / "transcript.json"
         transcript.write_text(json.dumps([{"start_s": 0.0, "end_s": 0.2, "text": "打开商店"}]))

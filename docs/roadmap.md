@@ -47,7 +47,7 @@ D01–D03 可以在当前 Linux 环境推进。D04 需要 Windows 环境，D05 �
 
 | 证据 | 结果与限制 | 查看位置 |
 |---|---|---|
-| Linux 回归 | 当前 73 项测试与 demo 通过；此前动作经验 train、learned-demo 通过 | [验证记录](validation.md) |
+| Linux 回归 | 当前 75 项测试与 demo 通过；新增 Windows 路径规范化和摘要缓存回归；此前动作经验 train、learned-demo 通过 | [验证记录](validation.md) |
 | 首个真实教程 | 28.03 秒原神视频，本地 fast 分析 12.58 秒；关键画面另行复核 | [视频阶段说明](video-stage1.md)；本机 `memory/videos/analysis/6235bf107aea1d29804a/` |
 | 原神候选命令 | 20 个分P生成并校验 674 条；54 条记录语音纠错；均未人工复核、未编译为执行动作 | [第二阶段说明](voice-command-stage2.md)；本机 `memory/commands/BV1P6SNYREo8/index.json` |
 | 真实训练流程检查 | CPU/YOLO26n/合成 4 张训练图与 4 张验证图，一轮约 2.49 秒，指标为零 | 本机 `memory/validation/offline-training/result.json` |

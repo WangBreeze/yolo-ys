@@ -25,11 +25,12 @@ class Context:
     def input_path(self, value: str) -> Path:
         if not isinstance(value, str) or "://" in value:
             raise ValueError("use a local filesystem path")
-        return (self.root / value).resolve()
+        return (Path(self.root).resolve() / value).resolve()
 
     def output_path(self, value: str) -> Path:
+        root = Path(self.root).resolve()
         path = self.input_path(value)
-        if not path.is_relative_to(self.root):
+        if not path.is_relative_to(root):
             raise ValueError("outputs must remain inside this project")
         return path
 

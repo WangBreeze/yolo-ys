@@ -344,6 +344,17 @@ factory="{__name__}:SlowPolicy"
         with self.assertRaises(ValueError):
             context.input_path("https://example.org/video.mp4")
 
+    def test_output_paths_normalize_a_context_root_with_parent_segments(self):
+        with tempfile.TemporaryDirectory() as folder:
+            child = Path(folder) / "child"
+            child.mkdir()
+            root = child / ".." / "child"
+            context = Context(root, copy.deepcopy(load_config(ROOT / "configs/demo.toml").config))
+            self.assertEqual(context.output_path("memory/STOP"),
+                             (child / "memory/STOP").resolve())
+            with self.assertRaises(ValueError):
+                context.output_path("../escape.json")
+
     def test_invalid_action_is_rejected(self):
         for kwargs in ({"kind": "shell"}, {"kind": "click", "x": float("nan"), "y": 0.5},
                        {"kind": "key", "key": "W", "duration_ms": -1}):
