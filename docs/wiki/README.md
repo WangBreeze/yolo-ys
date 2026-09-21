@@ -15,11 +15,24 @@
 | 增加游戏适配器或替换模型 | [插件接入](../plugins.md) |
 | 下载教程、读取语义和比较速度 | [视频阶段](../video-stage1.md) |
 | 把原神教程语音转换为可复核命令 | [语音转候选游戏命令](../voice-command-stage2.md) |
+| 复核 P10 的候选语义命令 | [P10 候选命令复核表](../reviews/BV1P6SNYREo8/P10.md) |
 | 训练 YOLO 并从 Windows 实时画面形成稳定游戏状态 | [原神实时感知方案](../genshin-realtime-perception.md) |
 | 查看原神教程基线训练节点、数据隔离和当前进度 | [YOLO 训练计划与进度](../genshin-yolo-training-plan.md) |
 | 区分视觉训练、动作经验和后续行为克隆 | [记忆与训练](../learning.md) |
 | 查看实测结果及限制 | [验证记录](../validation.md) |
 | 了解项目内 Codex 技能 | [技能适配检查](../skills-audit.md) · [项目技能](../../.agents/skills/game-agent-gpt6/SKILL.md) |
+
+## 原神视觉基线索引
+
+| 产物 | 入口与状态 |
+|---|---|
+| 实时感知设计 | [原神实时感知方案](../genshin-realtime-perception.md)：YOLO、OCR、跨帧状态融合与规划器边界 |
+| 训练计划与节点 | [YOLO 训练计划](../genshin-yolo-training-plan.md)：GY0–GY7 进度、数据隔离、指标和限制 |
+| 训练元数据 | [训练报告 JSON](../reports/genshin-ui-yolo26n-v1-training.json)：类别、参数、数据与权重哈希、Ultralytics 指标 |
+| 独立验证结果 | [评估报告 JSON](../reports/genshin-ui-yolo26n-v1-evaluation.json)：P10/P13 逐帧结果、逐类召回和完整教程回放 |
+| 版本化权重 | [模型说明](../../models/README.md)：5.12 MiB、SHA-256、适用范围和已知失败 |
+| Windows 加载配置 | [原神 Windows 示例](../../configs/genshin-windows.example.toml)：默认 dry-run，指向版本化权重 |
+| 汇总验证结论 | [验证记录](../validation.md)：代码回归、训练证据、迁移包和待验证项 |
 
 ## 使用者和开发者共用的边界
 
@@ -32,4 +45,4 @@
 
 新阶段开始或完成时更新 [路线](../roadmap.md)；新增/替换模块时更新 [架构](../architecture.md) 或 [插件](../plugins.md)；命令变化更新对应使用文档；测试结果更新 [验证记录](../validation.md)。本 Wiki 负责导航和开发约定，不复制所有命令，避免多个版本相互矛盾。
 
-开发决策与事实写入 [项目记忆](../../memory/project.md)。代码、示例、Wiki 与路线同步提交；视频、模型和运行数据库通过独立数据包迁移。项目根目录 [README](../../README.md) 保留面向使用者的简短入口。
+开发决策与事实写入 [项目记忆](../../memory/project.md)。代码、示例、Wiki 与路线同步提交；视频、数据集和运行数据库通过独立数据包迁移。经过明确选择的小型发布权重可以随仓库版本化，并在本 Wiki 记录大小、哈希和验证边界。项目根目录 [README](../../README.md) 保留面向使用者的索引。

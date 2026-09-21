@@ -4,6 +4,20 @@
 
 [项目路线](docs/roadmap.md) · [开发 Wiki](docs/wiki/README.md) · [原神实时感知方案](docs/genshin-realtime-perception.md) · [YOLO 训练计划](docs/genshin-yolo-training-plan.md) · [开发流程](docs/wiki/development.md) · [验证记录](docs/validation.md)
 
+## 文档与 Wiki 索引
+
+完整导航以[项目开发 Wiki](docs/wiki/README.md)为入口：
+
+| 内容 | 入口 |
+|---|---|
+| 项目阶段、下一步和开发约定 | [项目路线](docs/roadmap.md) · [开发流程](docs/wiki/development.md) |
+| 核心结构、插件边界和本地学习 | [架构](docs/architecture.md) · [插件接入](docs/plugins.md) · [记忆与训练](docs/learning.md) |
+| 视频下载理解与语音候选命令 | [第一阶段](docs/video-stage1.md) · [第二阶段](docs/voice-command-stage2.md) · [P10 复核表](docs/reviews/BV1P6SNYREo8/P10.md) |
+| 原神实时状态识别与 YOLO 训练 | [实时感知方案](docs/genshin-realtime-perception.md) · [训练计划与进度](docs/genshin-yolo-training-plan.md) |
+| Linux/Windows 使用与验证证据 | [双平台说明](docs/windows-linux.md) · [验证记录](docs/validation.md) |
+| 当前版本化视觉基线 | [模型说明](models/README.md) · [训练报告](docs/reports/genshin-ui-yolo26n-v1-training.json) · [评估报告](docs/reports/genshin-ui-yolo26n-v1-evaluation.json) |
+| 项目内 GPT-6 开发约定 | [技能适配检查](docs/skills-audit.md) · [项目技能](.agents/skills/game-agent-gpt6/SKILL.md) |
+
 ## Linux 训练与 Windows 运行
 
 Linux 用于下载视频、读取语义、制作标注数据集和训练视觉模型；Windows 使用独立的窗口采集与 SendInput 插件运行游戏。Windows 默认配置使用 dry-run。当前在 Linux 完成离线验证，Windows 游戏实机尚未测试。
@@ -158,7 +172,7 @@ conda env list
 conda remove -n yolo26 --all
 ```
 
-模型权重没有存入仓库。首次运行时，Ultralytics 会自动下载所需的 `yolo26*.pt` 文件。
+通用 Ultralytics `yolo26*.pt` 权重默认不存入仓库，首次运行时可能自动下载。经过大小、来源和验证结果核对的原神教程基线是明确例外，保存在 `models/genshin-ui-yolo26n-v1.pt`；它没有通过跨视频泛化验收，限制见[模型说明](models/README.md)。
 
 ## 运行图片检测
 
