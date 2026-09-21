@@ -2,7 +2,7 @@
 
 本项目提供插件式游戏代理：理解本地教程、根据当前游戏状态操作、验证结果，并把教程与执行经验保存在本目录。保留原有 Ultralytics YOLO26 图片检测和 2K 性能测试。
 
-[项目路线](docs/roadmap.md) · [开发 Wiki](docs/wiki/README.md) · [开发流程](docs/wiki/development.md) · [验证记录](docs/validation.md)
+[项目路线](docs/roadmap.md) · [开发 Wiki](docs/wiki/README.md) · [原神实时感知方案](docs/genshin-realtime-perception.md) · [YOLO 训练计划](docs/genshin-yolo-training-plan.md) · [开发流程](docs/wiki/development.md) · [验证记录](docs/validation.md)
 
 ## Linux 训练与 Windows 运行
 
@@ -10,7 +10,7 @@ Linux 用于下载视频、读取语义、制作标注数据集和训练视觉�
 
 Windows 在项目目录先运行 `python tools/setup-project.py --profile windows`，随后用 `tools\game-agent.cmd demo` 检查环境。视频功能使用 `tools\youget.cmd`、`tools\video.cmd`；安装、窗口接入、Linux 标注训练和迁移方式见 [双平台使用说明](docs/windows-linux.md)。
 
-已提供 `prepare-dataset`、`build-dataset`、`check-dataset`、`train-detector`，视觉训练与原来的动作经验 `train` 分开。当前原神教程已生成 32 个待标注帧；只有完成标注并准备独立验证素材后才进行正式训练。
+已提供 `prepare-dataset`、`build-dataset`、`check-dataset`、`train-detector`，视觉训练与原来的动作经验 `train` 分开。当前已用33张短教程训练帧和19张P10/P13独立验证帧完成8类 YOLO26n 教程基线；5.12 MiB 的[基线权重](models/README.md)已随仓库保存。小地图和交互提示独立召回为0，背包界面存在误报，因此该权重只验证训练与迁移链路，尚不能用于真实游戏决策。
 
 ## 第一阶段：下载教程并理解内容
 

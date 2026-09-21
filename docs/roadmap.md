@@ -1,6 +1,6 @@
 # 项目开发路线
 
-更新日期：2026-09-20。入口：[开发 Wiki](wiki/README.md) · [架构](architecture.md) · [验证记录](validation.md)。
+更新日期：2026-09-21。入口：[开发 Wiki](wiki/README.md) · [架构](architecture.md) · [实时感知方案](genshin-realtime-perception.md) · [训练计划与进度](genshin-yolo-training-plan.md) · [验证记录](validation.md)。
 
 ## 目标与当前阶段
 
@@ -15,9 +15,9 @@
 | R0 模块化框架和本地记忆 | 已实现，Linux 已验证 | 配置继承、插件清单、版本化 Plan、模拟闭环、SQLite、动作经验学习 | 保持原 demo/学习回归通过；新增模块不强制加载未选中的 GPU/桌面依赖 |
 | R1 视频入库与语义理解 | 已实现，20 个分P已解析 | you-get 原流下载、默认分类、语音和画面分析、报告与缓存 | 继续记录摘要正确性、关键步骤覆盖和耗时；修正把讲解推断为已完成任务的问题 |
 | R1.5 语音到候选命令 | schema、原神词典、提取与校验已实现 | 参考 BetterGI 固定提交的 28 个语义命令；20 个分P生成 674 条带时间证据的候选命令 | 人工复核首批样本；为命令补可观察前置/完成条件；实现经复核命令到 Plan 的编译与 Linux simulation 验收 |
-| R2 Linux 视觉训练 | 工具已验证，真实数据待准备 | 抽帧、人工标注格式、分组隔离、YOLO 数据导出、训练产物和校验 | 标注原神 32 帧，补独立录制的验证素材；训练并报告类别召回、误报与独立集指标 |
+| R2 Linux 视觉训练 | 教程基线已训练，跨视频泛化未通过 | 33张训练帧、19张独立验证帧、8类 YOLO26n 权重和完整教程回放；区分 YOLO 界面元素、OCR 动态文本和跨帧状态 | 小地图/交互提示独立召回为0且背包有误报；补目标 Windows profile 的独立正样本后重新训练 |
 | R3 Windows 平台接入 | 插件已实现，实机待验收 | MSS 客户区采集、SendInput、DPI/窗口核对、输入释放、启动脚本、迁移包 | Windows 环境检查、截图/坐标核对、单次输入与停止验证；先完成 dry-run 定位检查 |
-| R4 首个真实游戏任务 | 待开发/验证 | 当前有原神任务的候选语义和检测类别草案 | 补实际游戏 build/profile、专用感知与可观察条件；人工核对 Plan；记录完整任务成功与失败轨迹 |
+| R4 首个真实游戏任务 | 感知设计完成，待开发/验证 | 当前有原神任务的候选语义、第一版实时视觉词表和状态规则 | 补实际游戏 build/profile、OCR 与跨帧状态融合；人工核对 Plan；记录完整任务成功与失败轨迹 |
 | R5 人工示范与策略训练 | 待开发 | 已有结构化动作经验接口 | 录制同步画面和真实键鼠事件，检查时序与数据来源，再接行为克隆/时序策略插件 |
 | R6 多游戏复用与性能优化 | 后续 | 可替换的游戏、模型和平台边界 | 在多个独立游戏 profile 上复验，按测量结果替换瓶颈模块，验证升级和回滚 |
 
@@ -27,11 +27,11 @@
 
 当前新增的教程第二阶段说明见 [语音转候选游戏命令](voice-command-stage2.md)。语音到高层候选命令已经跑通 20 个分P；下一步从 P10 开始人工复核，补齐可观察条件后才编译为 Plan。开放世界移动所需的按键保持、组合输入和连续镜头控制在 Windows dry-run 前扩展。
 
-1. **D01：整理标注规范。** 明确 `quest_food`、`use_button`、`quest_tab`、`achievement_banner` 的框选范围、负样本和易混淆情形，复核现有 32 帧。当前是文件式标注，图形化框选工具尚未实现。
+1. **D01：按实时感知词表整理标注规范。** 教程基线已冻结 8 类词表并开始执行[训练计划](genshin-yolo-training-plan.md)；任务标题和进度由 OCR 读取，不为每个任务建立 YOLO 类别。当前是文件式标注，图形化框选工具尚未实现。
 2. **D02：补独立验证素材。** 同场录制的剪辑共享 group，同视频和相同图像不能跨 train/val/test；当前单条教程不足以形成独立验证集。
 3. **D03：完成第一个可评估的视觉模型。** 按游戏/profile 固定类别，训练后保存数据、初始权重、结果权重哈希和指标；不能把合成检查产生的零指标模型作为交付模型。
 4. **D04：Windows 原生检查。** 双平台 GitHub CI 已通过；下一步配置实际窗口、依赖、GPU、缩放和键位，核对客户区截图，完成 dry-run 和有限输入检查，保存实机证据。
-5. **D05：原神任务闭环。** 从已核对语义编写 Plan，使背包页、任务餐品、使用按钮、成就提示都有明确观测条件；补异常恢复和委托完成条件后再验证整个任务。
+5. **D05：原神任务闭环。** 按[实时感知方案](genshin-realtime-perception.md)实现 YOLO 界面锚点、按需 OCR 和跨帧状态融合；从已核对语义编写 Plan，使背包页、任务物品、使用按钮、成就提示都有明确观测条件；补异常恢复和任务完成条件后再验证整个任务。
 
 D01–D03 可以在当前 Linux 环境推进。D04 需要 Windows 环境，D05 依赖实际游戏 profile 与可用感知模型；这些依赖不影响 Linux 继续制作训练数据。
 
@@ -50,7 +50,8 @@ D01–D03 可以在当前 Linux 环境推进。D04 需要 Windows 环境，D05 �
 | Linux 回归 | 当前 75 项测试与 demo 通过；新增 Windows 路径规范化和摘要缓存回归；此前动作经验 train、learned-demo 通过 | [验证记录](validation.md) |
 | 首个真实教程 | 28.03 秒原神视频，本地 fast 分析 12.58 秒；关键画面另行复核 | [视频阶段说明](video-stage1.md)；本机 `memory/videos/analysis/6235bf107aea1d29804a/` |
 | 原神候选命令 | 20 个分P生成并校验 674 条；54 条记录语音纠错；均未人工复核、未编译为执行动作 | [第二阶段说明](voice-command-stage2.md)；本机 `memory/commands/BV1P6SNYREo8/index.json` |
-| 真实训练流程检查 | CPU/YOLO26n/合成 4 张训练图与 4 张验证图，一轮约 2.49 秒，指标为零 | 本机 `memory/validation/offline-training/result.json` |
+| 原神教程视觉基线 | GPU/YOLO26n/33张训练+19张独立验证；5.12 MiB 权重已版本化，但小地图和交互提示独立召回为0，背包 precision=0.5 | [训练计划与进度](genshin-yolo-training-plan.md)；[评估报告](reports/genshin-ui-yolo26n-v1-evaluation.json) |
+| 合成训练流程检查 | CPU/YOLO26n/合成 4 张训练图与 4 张验证图，一轮约 2.49 秒，指标为零 | 本机 `memory/validation/offline-training/result.json` |
 | 项目迁移 | 116 个文件、两条原始媒体流、32 个待标注帧校验通过；在 Linux 不同目录运行基础流程 | 本机 `memory/validation/windows-portability.json`；历史包不包含本次新增 Wiki |
 | Windows 实机 | 尚无结果 | [Windows 接入步骤](windows-linux.md) |
 

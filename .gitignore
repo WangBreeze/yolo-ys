@@ -5,6 +5,10 @@ __pycache__/
 *.pt
 *.part
 
+# Reviewed release weights that are intentionally versioned.
+!models/
+!models/genshin-ui-yolo26n-v1.pt
+
 # 推理输出
 runs/
 

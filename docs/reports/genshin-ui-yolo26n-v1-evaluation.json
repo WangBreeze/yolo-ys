@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "kind": "genshin_tutorial_detector_baseline_evaluation",
+  "status": "tutorial_baseline_not_windows_verified",
+  "weights": "models/genshin-ui-yolo26n-v1.pt",
+  "dataset": "memory/datasets/genshin-ui-yolo-v1/dataset.json",
+  "thresholds": {
+    "confidence": 0.25,
+    "match_iou": 0.5
+  },
+  "validation": {
+    "frames": 19,
+    "elapsed_s": 9.6508,
+    "per_class": {
+      "hud_minimap": {
+        "support": 16,
+        "tp": 0,
+        "fp": 0,
+        "fn": 16,
+        "precision_at_0.25_iou_0.5": null,
+        "recall_at_0.25_iou_0.5": 0.0
+      },
+      "interaction_prompt": {
+        "support": 2,
+        "tp": 0,
+        "fp": 0,
+        "fn": 2,
+        "precision_at_0.25_iou_0.5": null,
+        "recall_at_0.25_iou_0.5": 0.0
+      },
+      "inventory_panel": {
+        "support": 1,
+        "tp": 1,
+        "fp": 1,
+        "fn": 0,
+        "precision_at_0.25_iou_0.5": 0.5,
+        "recall_at_0.25_iou_0.5": 1.0
+      },
+      "quest_tab": {
+        "support": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision_at_0.25_iou_0.5": null,
+        "recall_at_0.25_iou_0.5": null
+      },
+      "quest_item_card": {
+        "support": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision_at_0.25_iou_0.5": null,
+        "recall_at_0.25_iou_0.5": null
+      },
+      "use_button": {
+        "support": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision_at_0.25_iou_0.5": null,
+        "recall_at_0.25_iou_0.5": null
+      },
+      "achievement_banner": {
+        "support": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision_at_0.25_iou_0.5": null,
+        "recall_at_0.25_iou_0.5": null
+      },
+      "dialogue_box": {
+        "support": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision_at_0.25_iou_0.5": null,
+        "recall_at_0.25_iou_0.5": null
+      }
+    },
+    "per_frame": [
+      {
+        "image": "images/val/p10_val_0022.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 22.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0044.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 44.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0066.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 66.0,
+        "ground_truth": [
+          "hud_minimap",
+          "interaction_prompt"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0088.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 88.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0111.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 111.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0133.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 133.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0155.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 155.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0644.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 644.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0666.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 666.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p10_val_0680.png",
+        "group": "BV1P6SNYREo8-P10",
+        "time_s": 680.0,
+        "ground_truth": [],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p13_val_0660.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 660.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p13_val_0690.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 690.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p13_val_0720.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 720.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p13_val_0750.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 750.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p13_val_0780.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 780.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p13_val_0810.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 810.0,
+        "ground_truth": [
+          "hud_minimap",
+          "interaction_prompt"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p13_val_0840.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 840.0,
+        "ground_truth": [
+          "hud_minimap"
+        ],
+        "predictions": []
+      },
+      {
+        "image": "images/val/p13_val_0860.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 860.0,
+        "ground_truth": [],
+        "predictions": [
+          {
+            "class": "inventory_panel",
+            "confidence": 0.281337,
+            "xyxy": [
+              0.051848,
+              0.0,
+              0.994959,
+              1.0
+            ]
+          }
+        ]
+      },
+      {
+        "image": "images/val/p13_val_0870.png",
+        "group": "BV1P6SNYREo8-P13",
+        "time_s": 870.0,
+        "ground_truth": [
+          "inventory_panel"
+        ],
+        "predictions": [
+          {
+            "class": "inventory_panel",
+            "confidence": 0.912526,
+            "xyxy": [
+              0.016784,
+              0.0,
+              1.0,
+              1.0
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "training_source_replay": {
+    "video": "memory/videos/objects/6235bf107aea1d29804a/raw/【原神】餐品订单-隐藏成就《这不是应急食品》-每日委托-每日任务-蒙德[00].mp4",
+    "frames": 841,
+    "fps": 30.0,
+    "elapsed_s": 1.4463,
+    "processing_fps": 581.47,
+    "note": "This is the training-source tutorial and measures temporal consistency or memorization, not cross-video generalization.",
+    "detections": {
+      "hud_minimap": {
+        "detected_frames": 53,
+        "first_s": 14.3,
+        "last_s": 16.067,
+        "longest_contiguous_frames": 49,
+        "segments": [
+          [
+            14.3,
+            14.4,
+            4
+          ],
+          [
+            14.467,
+            16.067,
+            49
+          ]
+        ],
+        "segments_truncated": false
+      },
+      "interaction_prompt": {
+        "detected_frames": 0,
+        "first_s": null,
+        "last_s": null,
+        "longest_contiguous_frames": 0,
+        "segments": [],
+        "segments_truncated": false
+      },
+      "inventory_panel": {
+        "detected_frames": 131,
+        "first_s": 16.633,
+        "last_s": 20.967,
+        "longest_contiguous_frames": 131,
+        "segments": [
+          [
+            16.633,
+            20.967,
+            131
+          ]
+        ],
+        "segments_truncated": false
+      },
+      "quest_tab": {
+        "detected_frames": 132,
+        "first_s": 16.667,
+        "last_s": 21.033,
+        "longest_contiguous_frames": 132,
+        "segments": [
+          [
+            16.667,
+            21.033,
+            132
+          ]
+        ],
+        "segments_truncated": false
+      },
+      "quest_item_card": {
+        "detected_frames": 74,
+        "first_s": 18.233,
+        "last_s": 20.933,
+        "longest_contiguous_frames": 36,
+        "segments": [
+          [
+            18.233,
+            18.6,
+            12
+          ],
+          [
+            18.7,
+            19.133,
+            14
+          ],
+          [
+            19.3,
+            19.667,
+            12
+          ],
+          [
+            19.767,
+            20.933,
+            36
+          ]
+        ],
+        "segments_truncated": false
+      },
+      "use_button": {
+        "detected_frames": 0,
+        "first_s": null,
+        "last_s": null,
+        "longest_contiguous_frames": 0,
+        "segments": [],
+        "segments_truncated": false
+      },
+      "achievement_banner": {
+        "detected_frames": 0,
+        "first_s": null,
+        "last_s": null,
+        "longest_contiguous_frames": 0,
+        "segments": [],
+        "segments_truncated": false
+      },
+      "dialogue_box": {
+        "detected_frames": 212,
+        "first_s": 20.967,
+        "last_s": 28.0,
+        "longest_contiguous_frames": 212,
+        "segments": [
+          [
+            20.967,
+            28.0,
+            212
+          ]
+        ],
+        "segments_truncated": false
+      }
+    }
+  },
+  "random_frame_22_898": [
+    {
+      "class": "dialogue_box",
+      "confidence": 0.448057
+    }
+  ],
+  "limitations": [
+    "Only hud_minimap, interaction_prompt and inventory_panel have positive examples in the independent validation recordings.",
+    "The validation recordings use creator overlays and a different UI scale from the short training tutorial.",
+    "No target Windows game capture is included."
+  ]
+}

@@ -10,6 +10,8 @@
 
 双平台适配另增 `prepare-dataset → 复核标注 → build-dataset → detector_trainer.train` 离线链路。Linux 负责制作视频训练数据；Windows 的 `windows.capture` 与 `windows.controller` 替换桌面接口，核心数据协议保持 API v1。检测数据集 schema v1 独立于 Plan、动作经验和 SQLite；`experience.policy` 1.0.1 仅修正 UTF-8 加载，继续读取原 schema v1 产物。详见 [双平台工作流](windows-linux.md)。
 
+原神实时感知把 YOLO 限定为界面锚点和目标定位器，动态任务文字交给 OCR，跨帧状态由融合器确认后再写入 `State`。这样 Planner 依据稳定的当前状态选择下一步，而不是依据单帧检测直接输入。第一版词表、状态规则、数据切分和性能方案见[原神实时画面感知与 YOLO 训练方案](genshin-realtime-perception.md)。
+
 ```mermaid
 flowchart TD
     video[本地教程视频] --> semantic[带时间语音与候选画面语义]

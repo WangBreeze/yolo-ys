@@ -1,6 +1,6 @@
 # 验证记录
 
-更新日期：2026-09-20。入口：[项目路线](roadmap.md) · [开发 Wiki](wiki/README.md)。
+更新日期：2026-09-21。入口：[项目路线](roadmap.md) · [开发 Wiki](wiki/README.md) · [YOLO 训练计划](genshin-yolo-training-plan.md)。
 
 当前环境为 Linux、Conda `yolo26` / Python 3.12.14，项目 `.venv` 复用该环境的 PyTorch。以下分别记录代码回归、真实媒体、合成训练和迁移结果。Windows 原生运行与真实游戏输入尚未验收。
 
@@ -34,11 +34,17 @@
 
 ## 离线视觉训练与迁移
 
+原神教程 YOLO26n 基线使用短教程33张复核训练帧，以及独立 P10/P13 的19张复核验证帧，8类数据通过来源、录制组、图片哈希和 YOLO 格式检查。RTX 5070 Ti Laptop GPU 上以 `imgsz=640`、batch 8、50轮训练；版本化权重为 [`models/genshin-ui-yolo26n-v1.pt`](../models/genshin-ui-yolo26n-v1.pt)，大小5,368,901字节（约5.12 MiB），SHA-256 为 `efb5ac03ae65550229678677a04b8e4b6a1094631cfc4590c1a1740a110530ca`。
+
+Ultralytics 汇总 precision=0.9849、recall=0.3333、mAP50=0.3511、mAP50-95=0.3393；逐类固定阈值复核显示，小地图16例和交互提示2例全部漏检，背包1例检出但另有1次把成就页误报为背包，其余五类没有独立正样本。训练来源完整视频中能连续检测部分界面状态，但不构成泛化证据。机器可读的[训练元数据](reports/genshin-ui-yolo26n-v1-training.json)和[逐帧评估](reports/genshin-ui-yolo26n-v1-evaluation.json)已随仓库保存，结论与限制见[训练计划](genshin-yolo-training-plan.md)。训练期间 Ultralytics 自动下载并缓存一个字体文件，因此本轮不是完全无网络训练。
+
 两个不同的合成录像分别提供 4 张训练图和 4 张验证图。已有 YOLO26n 权重在 CPU 上真实训练一轮，`imgsz=64`、batch 2、workers 0，产出 `weights/best.pt` 和带来源哈希的训练记录。训练函数耗时 **2.49 秒**，不含检查脚本中更早的数据准备/导入；precision、recall、mAP 均为零，只用于验证链路可运行。证据为本机 `memory/validation/offline-training/result.json`。复现工具为 [check-offline-training.py](../tools/check-offline-training.py)，每次应选择新的输出目录。
 
-原神教程已准备 32 个 PNG 和 `annotations.json`，位于本机 `memory/datasets/genshin-food-v1/`，全部 `reviewed=false`、`split=unassigned`。实际执行数据集构建已确认拒绝这些未复核数据；尚无独立验证录像、正式游戏检测模型、同步人工键鼠数据或行为克隆模型。
+旧的 `memory/datasets/genshin-food-v1/` 仍保留32个未复核帧，不参与本次基线；本次使用新的已复核、按源隔离的数据目录。尚无目标 Windows profile 的录制、正式游戏检测模型、同步人工键鼠数据或行为克隆模型。
 
 历史迁移包 `memory/transfers/project-windows.zip` 的 116 个文件、两条原始媒体流、32 个标注帧哈希均已核对。在 Linux 下解压到含空格和中文的不同目录，禁用项目环境/site-packages 后，doctor、demo、train、learned-demo 通过。该结果证明当时快照可迁移到另一目录，**不等于 Windows 原生验收**；此历史包不包含随后新增的路线图与 Wiki。证据为本机 `memory/validation/windows-portability.json`；重新打包步骤见 [双平台说明](windows-linux.md)。
+
+新的教程基线迁移包 `memory/transfers/genshin-ui-yolo26n-v1-windows.zip` 包含228个文件、84,031,007字节，SHA-256 为 `cfb067687fdd4a38f8c3ba0c6aa2b8bee2cd3258751c9bbe3b2adf66e92fd3d5`，压缩数据完整性检查通过。它包含训练数据、权重、验证报告和 `configs/genshin-windows.example.toml`，默认仍为 dry-run；尚未在 Windows 解压运行。
 
 ## 历史基线与待验证项
 
@@ -46,4 +52,4 @@
 
 仍待验证：Windows 实际窗口/DPI/截图/输入兼容性、真实游戏任务与恢复、独立录制数据集的检测质量、2K 实机延迟目标。Linux uinput/截图联动也尚未实机验收。单元测试、合成素材或迁移检查均不能替代这些结果。
 
-`memory/` 的视频、模型、数据库和详细运行产物不进入 Git；全新克隆可查看本页摘要并用工具复现，详细本机证据需要单独迁移。
+`memory/` 的视频、数据集、数据库和详细运行产物不进入 Git；本次小于200M的教程基线权重和两份报告是经过选择的版本化产物。全新克隆可直接加载该权重并查看报告，完整原始证据仍需单独迁移。

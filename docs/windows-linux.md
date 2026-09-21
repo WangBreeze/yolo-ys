@@ -82,6 +82,8 @@ tools\game-agent.cmd --config configs/windows.local.toml run --plan memory/game-
 
 这里的 `--live` 表示允许读取实时游戏模式；实际是否发送输入由 controller 选择决定。默认 dry-run 不发送按键，也不会把结果记成实机成功。
 
+教程基线可以复制 `configs/genshin-windows.example.toml` 作为起点。它指向仓库内的 `models/genshin-ui-yolo26n-v1.pt`，但该权重跨视频验证未通过，只用于确认 Windows 能加载模型、读取窗口并显示候选框；不能作为开启真实输入的依据。
+
 完成定位与成功条件检查后，将同一配置中的 controller 替换为：
 
 ```toml

@@ -85,3 +85,19 @@ P11–P20 随后全部使用 balanced 完成解析，共 6870.35 秒（1 小时 
 GitHub Windows CI 暴露两项跨平台问题：未规范化的 `Context.root` 会让 Windows 临时目录中的合法输出被误判为越界；Windows 的 `st_ctime` 是创建时间，不能作为同大小、恢复 mtime 后的内容变化标记。输入/输出路径现在基于已解析的 root 做边界判断，Windows 摘要缓存改为重新计算内容哈希。新增两个回归测试后共 75 项测试及 demo 在 Linux 通过。
 
 第一次修复后 Windows CI 的 42 个路径错误降为 4 个：视频库另有一处对未规范化 root 调用 `relative_to`，两个未来 schema 测试则误以为 SQLite 连接的上下文管理器会关闭连接。视频媒体路径现在基于解析后的项目 root 保存；测试使用 `closing` 明确释放 SQLite 文件句柄，避免 Windows 临时目录清理时出现 WinError 32。相关 4 项定向测试、完整 75 项测试和 demo 在 Linux 通过；提交 `e4267a2` 的 GitHub Actions 运行 `35504533733` 随后在 Ubuntu 与 Windows 全部通过。该结果只验证假设备离线流程，不代表 Windows 真实游戏输入。
+
+## 2026-09-21：原神实时状态感知方案
+
+用户明确下一阶段需要从 Windows 实时画面识别任务、按钮和任务状态，使规划器依据当前状态决定下一步。决定不把动态任务名称和进度扩张为 YOLO 类别：YOLO 负责界面锚点、按钮、提示和目标框，OCR 读取任务区域，跨帧融合器依据连续观测和允许的状态转移生成稳定 `State`。
+
+第一版以“探索 HUD → 背包 → 任务页 → 任务物品 → 使用 → 观察成就/任务结果”为最小闭环，训练数据按 Windows 录制会话和游戏 build/profile 隔离。教程帧只能作为初始素材，正式验证必须包含目标 Windows 配置的独立录制。单帧 mAP 之外还要记录逐类 precision/recall、连续漏检、错误状态转移、目标定位误差、状态延迟和完整链路耗时。详细词表与实施顺序见 `docs/genshin-realtime-perception.md`。
+
+## 2026-09-21：原神教程 YOLO26n 基线训练
+
+用户授权按计划训练并记录节点进度。训练集使用短教程 `BV1dt42147zq` 的33张复核帧，验证集使用独立源 P10/P13 的19张复核帧，类别为小地图、交互提示、背包、任务页、任务物品、使用按钮、成就弹窗和对话区域。数据构建器确认 train/val 的录制组、源哈希和图片无跨集合泄漏。
+
+RTX 5070 Ti Laptop GPU 上使用本地 `yolo26n.pt`、640输入、batch 8、50轮完成训练。权重大小5,368,901字节（约5.12 MiB），低于200M提交阈值，已复制到版本路径 `models/genshin-ui-yolo26n-v1.pt`；SHA-256 为 `efb5ac03ae65550229678677a04b8e4b6a1094631cfc4590c1a1740a110530ca`。训练元数据和逐帧评估复制到 `docs/reports/`。Ultralytics 汇总 mAP50=0.3511、recall=0.3333，但固定 conf=0.25/IoU=0.5 的逐类复核显示：独立小地图16例和交互提示2例全部漏检；背包1例检出，同时把成就页误报为背包；其余类别没有独立正样本。
+
+完整短教程回放能连续检测训练来源中的小地图、背包、任务页、任务物品和对话区域；未检出交互提示、使用按钮和成就弹窗。22.898秒随机帧能输出 `dialogue_box` 0.448，但属于训练来源，不能证明泛化。结论是 `.pt` 训练/加载/迁移链路已验证，模型本身未通过跨视频或 Windows 实机验收。训练时 Ultralytics 另下载并缓存了 `Arial.ttf`；模型、视频和标注均为本地，但本轮不是完全无网络训练。
+
+已生成 Windows dry-run 配置 `configs/genshin-windows.example.toml` 和迁移包 `memory/transfers/genshin-ui-yolo26n-v1-windows.zip`。包内228个文件、84,031,007字节，SHA-256 为 `cfb067687fdd4a38f8c3ba0c6aa2b8bee2cd3258751c9bbe3b2adf66e92fd3d5`，压缩完整性检查通过；尚未在 Windows 解压或连接真实游戏窗口。

@@ -1,0 +1,16 @@
+# 教程基线权重的 Windows dry-run 示例。
+# 先执行 windows-info 并在本地副本中填写精确窗口信息；当前权重尚未通过 Windows 实机验证。
+extends = "windows.example.toml"
+
+[game]
+id = "genshin"
+version = "configure-current-windows-build"
+profile = "food-delivery-ui-v1"
+
+[plugins.perception]
+use = "yolo.perception"
+[plugins.perception.options]
+weights = "models/genshin-ui-yolo26n-v1.pt"
+device = 0
+imgsz = 640
+conf = 0.25
